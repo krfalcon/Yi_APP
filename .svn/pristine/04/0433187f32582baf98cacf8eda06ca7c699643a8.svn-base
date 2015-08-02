@@ -1,0 +1,174 @@
+//
+//  MemberInfoViewController.m
+//  TSOutlets
+//
+//  Created by 奚潇川 on 15/5/12.
+//  Copyright (c) 2015年 奚潇川. All rights reserved.
+//
+
+#import "MemberInfoViewController.h"
+
+@interface MemberInfoViewController ()
+
+@end
+
+@implementation MemberInfoViewController
+
+#pragma mark - InitView
+
+- (void)initFirstViewWithParameter:(NSDictionary *)parameter
+{
+    if (!parameter) return;
+    memberAPI = [[MemberAPITool alloc] init];
+    
+    _memberEntity = [memberAPI getMemberEntity];
+    
+    if (!memberInfoView && [[parameter valueForKey:@"type"] isEqualToString:@"member"]) {
+        memberInfoView = [[MemberInfoView alloc] initWithFrame:self.view.bounds];
+        [memberInfoView setDelegate:self];
+        [self.view addSubview:memberInfoView];
+        
+        self.currentView = memberInfoView;
+        
+        [memberInfoView getInfo:_memberEntity];
+    } else if (!onlinePointView && [[parameter valueForKey:@"type"] isEqualToString:@"online"]) {
+        onlinePointView = [[OnlinePointView alloc] initWithFrame:self.view.bounds];
+        [onlinePointView setDelegate:self];
+        [self.view addSubview:onlinePointView];
+        
+        self.currentView = onlinePointView;
+        
+        [onlinePointView getInfo:_memberEntity];
+    } else if ([[parameter valueForKey:@"type"] isEqualToString:@"offline"]) {
+        BOOL isBanded = NO;
+        
+        if (isBanded) {
+            offlinePointView = [[OfflinePointView alloc] initWithFrame:self.view.bounds];
+            [offlinePointView setDelegate:self];
+            [self.view addSubview:offlinePointView];
+            
+            self.currentView = offlinePointView;
+            
+            [offlinePointView getInfo:_memberEntity];
+        } else {
+            offlinePointBindView = [[OfflinePointBindView alloc] initWithFrame:self.view.bounds];
+            [offlinePointBindView setDelegate:self];
+            [self.view addSubview:offlinePointBindView];
+            
+            self.currentView = offlinePointBindView;
+        }
+    }
+}
+
+#pragma mark - Member Info Delegate 
+
+- (void)memberInfoViewDidResetPasswordButton {
+    [self pushViewControllerWithViewControllerType:ViewControllerTypeReset andParameter:nil];
+}
+
+- (void)memberInfoViewDidImageButtonWithType:(NSString *)type {
+    [self didTappedImagePickerWithTpye:type];
+}
+
+- (void)memberInfoViewDidEditButtonWithType:(int)type andMemberEntity:(MemberEntity *)memberEntity{
+    [self didTappedEditViewWithTpye:type andMemberEntity:memberEntity];
+}
+
+- (void)memberInfoViewDidSaveMemberEntity:(MemberEntity *)memberEntity {
+    if ([memberAPI updateMemberInfo:memberEntity]) {
+        _memberEntity = memberEntity;
+    }
+}
+
+- (void)memberInfoViewDidSavePortrait:(MemberEntity *)memberEntity {
+    if ([memberAPI updateMemberPortrait:memberEntity]) {
+        _memberEntity = memberEntity;
+    }
+}
+
+#pragma mark - Point Views Delegate
+
+- (void)scrollViewDidScroll {
+    [self wheelViewShouldHide];
+}
+
+- (void)onlinePointViewDidTapDetailButton {
+    [self pushViewControllerWithViewControllerType:ViewControllerTypeOnlineDetail andParameter:nil];
+}
+
+- (void)offlinePointViewDidTapDetailButton {
+    [self pushViewControllerWithViewControllerType:ViewControllerTypeOfflineDetail andParameter:nil];
+}
+
+- (void)offlinePointBindViewDidTapBindButton {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"shouldHideKeyboard" object:nil];
+    
+    if (!offlinePointView) {
+        offlinePointView = [[OfflinePointView alloc] initWithFrame:self.view.bounds];
+        [offlinePointView setDelegate:self];
+        [self.view addSubview:offlinePointView];
+        
+        [offlinePointView getInfo:nil];
+    }
+    self.nextView = offlinePointView;
+    [self showNextView];
+}
+
+#pragma mark - Wheel View Button
+
+- (void)wheelViewTappedButton1 {
+    [self popToIndexViewController];
+}
+
+- (void)wheelViewTappedButton2 {
+    BOOL isBanded = NO;
+    
+    if (isBanded) {
+        if (!offlinePointView) {
+            offlinePointView = [[OfflinePointView alloc] initWithFrame:self.view.bounds];
+            [offlinePointView setDelegate:self];
+            [self.view addSubview:offlinePointView];
+            
+            [offlinePointView getInfo:_memberEntity];
+        }
+        self.nextView = offlinePointView;
+    } else {
+        if (!offlinePointBindView) {
+            offlinePointBindView = [[OfflinePointBindView alloc] initWithFrame:self.view.bounds];
+            [offlinePointBindView setDelegate:self];
+            [self.view addSubview:offlinePointBindView];
+            
+            self.currentView = offlinePointBindView;
+        }
+        self.nextView = offlinePointBindView;
+    }
+    [self showNextView];
+}
+
+- (void)wheelViewTappedButton3 {
+    if (!onlinePointView) {
+        onlinePointView = [[OnlinePointView alloc] initWithFrame:self.view.bounds];
+        [onlinePointView setDelegate:self];
+        [self.view addSubview:onlinePointView];
+        
+        [onlinePointView getInfo:_memberEntity];
+    }
+    
+    self.nextView = onlinePointView;
+    [self showNextView];
+}
+
+- (void)wheelViewTappedButton4 {
+    if (!memberInfoView) {
+        memberInfoView = [[MemberInfoView alloc] initWithFrame:self.view.bounds];
+        [memberInfoView setDelegate:self];
+        [self.view addSubview:memberInfoView];
+        
+        [memberInfoView getInfo:_memberEntity];
+    }
+    
+    self.nextView = memberInfoView;
+    [self showNextView];
+}
+
+@end

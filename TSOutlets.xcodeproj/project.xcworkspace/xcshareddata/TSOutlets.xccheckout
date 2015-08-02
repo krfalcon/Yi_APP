@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>46B92CAD-088F-4430-B669-A3CFD2545062</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TSOutlets</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>d934bc13-ce4c-7641-ad50-bebc1102c505</key>
+		<string>https://kd.wha.la/svn/TSOutlets_iOS</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TSOutlets.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>d934bc13-ce4c-7641-ad50-bebc1102c505</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>d934bc13-ce4c-7641-ad50-bebc1102c505</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>d934bc13-ce4c-7641-ad50-bebc1102c505</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TSOutlets_iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>
