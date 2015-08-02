@@ -112,7 +112,7 @@
         i ++;
     }
 }
-
+//testing
 - (void)tappedVideoButton:(UIButton *)button {
     VideoEntity *videoEntity = (VideoEntity *)[videoArray objectAtIndex:button.tag];
 
